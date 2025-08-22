@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import { viteStaticCopy } from "vite-plugin-static-copy";
@@ -15,6 +15,10 @@ export default defineConfig({
             targets: [{ src: "src/tinyReactDialog.css", dest: "" }],
         }),
     ],
+    test: {
+        environment: "jsdom",
+        setupFiles: ["./tests/setupTests.ts"],
+    },
     build: {
         lib: {
             entry: "src/index.ts",
