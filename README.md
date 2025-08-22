@@ -1,69 +1,119 @@
-# React + TypeScript + Vite
+### `tiny-react-dialog`
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple, lightweight, and customizable React library for displaying modal dialog boxes.
 
-Currently, two official plugins are available:
+-----
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Installation
 
-## Expanding the ESLint configuration
+Install the package using npm:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install tiny-react-dialog
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Or with Yarn:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+yarn add tiny-react-dialog
 ```
+
+-----
+
+### Usage
+
+**Import**
+
+The core component is `TinyReactDialog`. The default styles are optional; if you prefer to provide your own styling, you can omit the CSS import.
+
+```jsx
+import { TinyReactDialog } from 'tiny-react-dialog';
+// Optional: import default styles
+import 'tiny-react-dialog/index.css';
+```
+
+**Controlling the Component**
+
+`TinyReactDialog` is a **controlled component**. You must manage its visibility from your parent component's state using the **`visible`** prop and a callback function for the **`onClose`** prop.
+
+The `onClose` callback is triggered when the user clicks the close button or the overlay, allowing you to update your state and close the dialog.
+
+**Styling and Customization**
+
+The component comes with an optional default CSS file. If you choose not to import it, you can style the dialog yourself using the default CSS class names or by providing your own via the `classNames` prop.
+
+The component's default structure is:
+
+```html
+<div class="tiny-react-dialog__overlay">
+    <div class="tiny-react-dialog__container">
+        <div class="tiny-react-dialog__content">
+            <!-- Content -->
+        </div>
+        <button class="tiny-react-dialog__close">
+            <!-- SVG closing icon -->
+        </button>
+    </div>
+</div>
+```
+
+To add your own classes (for example, with **Tailwind CSS**), use the **`classNames`** prop:
+
+```jsx
+import { TinyReactDialog } from 'tiny-react-dialog';
+
+<TinyReactDialog 
+  classNames={{
+    overlay: "bg-black/50 backdrop-blur",
+    container: "bg-white rounded-lg shadow-lg",
+    content: "p-4",
+    close: "top-2 right-2 p-1 text-gray-400 hover:text-gray-600"
+}} />
+```
+
+-----
+
+### Example
+
+Here's a complete example showing how to manage the dialog's state.
+
+```jsx
+import { useState } from "react";
+import { TinyReactDialog } from "tiny-react-dialog";
+import "tiny-react-dialog/index.css";
+
+export default function Example() {
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
+
+    const openDialog = () => {
+        setIsDialogVisible(true);
+    };
+
+    const closeDialog = () => {
+        setIsDialogVisible(false);
+    };
+
+    return (
+        <>
+            <button onClick={openDialog}>Open Dialog</button>
+
+            <TinyReactDialog visible={isDialogVisible} onClose={closeDialog}>
+                Dialog Content
+            </TinyReactDialog>
+        </>
+    );
+}
+```
+
+-----
+
+### Props
+
+The component accepts the following properties:
+
+| Prop         | Type                        | Default Value | Description                                                                     |
+|:-------------|:----------------------------|:--------------|:--------------------------------------------------------------------------------|
+| `visible`    | `boolean`                   | `false`       | Determines whether the dialog box is visible or hidden.                         |
+| `onClose`    | `() => void`                | **Required**  | A function to be called when the user requests to close the dialog.             |
+| `children`   | `ReactNode`                 | `undefined`   | The content to be rendered inside the dialog box.                               |
+| `classNames` | `{ overlay?: string, ... }` | `{}`          | An object for applying custom CSS class names to different parts of the dialog. |
