@@ -1,33 +1,35 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import dts from "vite-plugin-dts"
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import dts from "vite-plugin-dts";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
         react(),
-        cssInjectedByJsPlugin(),
         dts({
             insertTypesEntry: true,
             outDir: "dist",
         }),
+        viteStaticCopy({
+            targets: [{ src: "src/tinyReactDialog.css", dest: "" }],
+        }),
     ],
     build: {
         lib: {
-            entry: 'src/index.ts',
-            name: 'TinyReactDialog',
+            entry: "src/index.ts",
+            name: "TinyReactDialog",
             fileName: (format) => `index.${format}.js`,
-            formats: ['es', 'umd']
+            formats: ["es", "umd"],
         },
         rollupOptions: {
-            external: ['react', 'react-dom'],
+            external: ["react", "react-dom"],
             output: {
                 globals: {
-                    react: 'React',
-                    'react-dom': 'ReactDOM'
-                }
-            }
-        }
-    }
-})
+                    react: "React",
+                    "react-dom": "ReactDOM",
+                },
+            },
+        },
+    },
+});
