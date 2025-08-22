@@ -3,7 +3,7 @@ import { type ReactNode } from "react";
 import mergeClassnames from "./utils/mergeClassnames";
 
 export type TinyReactDialogProps = {
-    visible: boolean;
+    visible?: boolean;
     onClose: () => void;
     children?: ReactNode;
     classNames?: {
@@ -15,7 +15,7 @@ export type TinyReactDialogProps = {
 };
 
 export function TinyReactDialog({
-    visible,
+    visible = false,
     onClose,
     children = "tiny-react-dialog: children is missing",
     classNames = {},
