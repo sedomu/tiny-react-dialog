@@ -1,6 +1,6 @@
 {
     "name": "tiny-react-dialog",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "type": "module",
     "main": "dist/index.umd.js",
     "module": "dist/index.es.js",
@@ -17,6 +17,7 @@
     ],
     "exports": {
         ".": {
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.es.js",
             "require": "./dist/index.umd.js"
         },
