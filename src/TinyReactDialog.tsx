@@ -1,6 +1,5 @@
 import { type ReactNode } from "react";
 
-import "./utils/mergeClassnames";
 import mergeClassnames from "./utils/mergeClassnames";
 
 export type TinyReactDialogProps = {
